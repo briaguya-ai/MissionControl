@@ -13,16 +13,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ runner.os }}-switch-ccache
     - name: Build
       run: |
         cd lib/Atmosphere-libs/libstratosphere
-        make
+        make -j8
         cd ../../..
-        make dist
+        make -j8 dist
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
