@@ -27,7 +27,7 @@ jobs:
         ls
         cd lib/Atmosphere-libs/libstratosphere
         make
-        cd ../..
+        cd ../../..
         make dist
     - name: Upload build
       uses: actions/upload-artifact@v3
