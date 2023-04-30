@@ -1,6 +1,5 @@
 name: build
 on:
-  push:
   pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -11,27 +10,19 @@ jobs:
     container:
       image: devkitpro/devkita64:latest
     steps:
-    # - name: Install dependencies
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y ninja-build
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ runner.os }}-switch-ccache
     - name: Build
       run: |
-        cd Atmosphere-libs/libstratosphere
-        make
-        cd ../..
-        make dist
+        cd lib/Atmosphere-libs/libstratosphere
+        make -j8
+        cd ../../..
+        make -j8 dist
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: MissionControl
         path: |
-          dist
+          dist/*.zip
           
