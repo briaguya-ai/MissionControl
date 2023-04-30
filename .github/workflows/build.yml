@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: |
         ls
-        cd Atmosphere-libs/libstratosphere
+        cd lib/Atmosphere-libs/libstratosphere
         make
         cd ../..
         make dist
