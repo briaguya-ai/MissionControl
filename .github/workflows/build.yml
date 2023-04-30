@@ -24,6 +24,7 @@ jobs:
         key: ${{ runner.os }}-switch-ccache
     - name: Build
       run: |
+        ls
         cd Atmosphere-libs/libstratosphere
         make
         cd ../..
