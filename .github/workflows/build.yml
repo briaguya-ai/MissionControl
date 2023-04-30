@@ -34,5 +34,5 @@ jobs:
       with:
         name: MissionControl
         path: |
-          dist
+          dist/*.zip
           
