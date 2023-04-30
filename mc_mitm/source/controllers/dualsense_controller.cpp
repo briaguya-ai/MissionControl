@@ -142,10 +142,10 @@ namespace ams::controller {
     }
 
     void DualsenseController::MapInputReport0x01(const DualsenseReportData *src) {
-        m_left_stick.SetData(
-            static_cast<u16>(stick_scale_factor * src->input0x01.left_stick.x) & UINT12_MAX,
-            static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x01.left_stick.y)) & UINT12_MAX
-        );
+        // m_left_stick.SetData(
+        //     static_cast<u16>(stick_scale_factor * src->input0x01.left_stick.x) & UINT12_MAX,
+        //     static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x01.left_stick.y)) & UINT12_MAX
+        // );
         m_right_stick.SetData(
             static_cast<u16>(stick_scale_factor * src->input0x01.right_stick.x) & UINT12_MAX,
             static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x01.right_stick.y)) & UINT12_MAX
@@ -173,10 +173,10 @@ namespace ams::controller {
 
         m_battery = static_cast<u8>(8 * (battery_level + 2) / 10) & 0x0e;
     
-        m_left_stick.SetData(
-            static_cast<u16>(stick_scale_factor * src->input0x31.left_stick.x) & UINT12_MAX,
-            static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x31.left_stick.y)) & UINT12_MAX
-        );
+        // m_left_stick.SetData(
+        //     static_cast<u16>(stick_scale_factor * src->input0x31.left_stick.x) & UINT12_MAX,
+        //     static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x31.left_stick.y)) & UINT12_MAX
+        // );
         m_right_stick.SetData(
             static_cast<u16>(stick_scale_factor * src->input0x31.right_stick.x) & UINT12_MAX,
             static_cast<u16>(stick_scale_factor * (UINT8_MAX - src->input0x31.right_stick.y)) & UINT12_MAX
@@ -231,6 +231,12 @@ namespace ams::controller {
         m_buttons.dpad_left  = (buttons->dpad == DualsenseDPad_W)  ||
                                (buttons->dpad == DualsenseDPad_NW) ||
                                (buttons->dpad == DualsenseDPad_SW);
+
+        // HACK: use dpad for joystick
+        m_left_stick.SetData(
+            static_cast<u16>(stick_scale_factor * (m_buttons.dpad_right ? UINT8_MAX : (m_buttons.dpad_left ? 0 : 127))) & UINT12_MAX,
+            static_cast<u16>(stick_scale_factor * (m_buttons.dpad_up ? UINT8_MAX : (m_buttons.dpad_down ? 0 : 127))) & UINT12_MAX
+        );
 
         m_buttons.A = buttons->circle;
         m_buttons.B = buttons->cross;
